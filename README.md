@@ -1,17 +1,31 @@
-# React Color Table
+# Inbox(Email) Application
 
-## Tasks
-There’re 7 boxes in the page and each box can be toggled (white/green) by mouse click. If all the boxes are filled as green, then automatically remove green color from boxes one by one in reversed order every 500 ms. (all mouse click events on boxes should be disabled during this auto process) If user clicks outside of 7 boxes on the page, then stop the above automatic process.
-If user clicks “Replay” button on the page, then play all the history from scratch in 300ms period. (Needs to save history in the backend). While replaying, “Replay” button should be disabled and all the mouse click events should also be disabled.
+## Description
+Build a simple email inbox application
+- User should be able to login / logout.
+  Email should end with "@hometask.com" for validation checking
+- User should be able to see the list of emails in the inbox and click one of them to see the content in HTML format
+- User should be able to send a new email (@hometask.com) with validation checking
+  Title and Description (HTML content)
+- User should be able to mark the emails READ or UNREAD and move to / recover from trash bin
+- User should be able to search through email based on user's name, title or content.
+- User should be able to reply to the emails
+  The emails within the same thread should be grouped and displayed as one in the list
+- User should be able to filter out by READ or UNREAD status
+
+## Challenge
+- Should be able to use websocket to send and recive emails
+- Should be able to render html format in inbox page
 
 ## Environment
 - Windows 11
-- Node v18.19.0
-- Npm 10.2.3
+- Node v16.14.0
+- Npm 8.3.1
 
 ## Tech stacks
 - Vite + React + Typescript
 - Express
+- Postgres + pg
 
 ## Steps to run program
 1. Install node modules
