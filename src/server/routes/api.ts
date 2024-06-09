@@ -2,13 +2,16 @@ import { Router, Response, Request, NextFunction } from "express";
 import pg from "pg";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Joi from "joi";
+
+import { USER, HOST, DATABASE, PASSWORD, PORT } from "../constants";
 
 const pool = new pg.Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: 'developer2020!A',
-    port: 5432,
+    user: USER,
+    host: HOST,
+    database: DATABASE,
+    password: PASSWORD,
+    port: PORT,
 });
 
 const router = Router();
@@ -102,8 +105,20 @@ const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextF
     });
 };
 
+const schema = Joi.object({
+    email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .required(),
+    password: Joi.string()
+        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+        .required()
+});
+
 // User registration
 router.post('/register', async (req, res) => {
+    const { error } = schema.validate(req.body); 
+    if (error) return res.status(400).send(error.details[0].message);
+
     const { email, password } = req.body;
     if (!email.endsWith('@hometask.com')) return res.status(400).json({ message: 'Invalid email domain' });
 
@@ -140,8 +155,6 @@ router.get('/emails/:id', authenticateToken, async (req: AuthenticatedRequest, r
   
 // Send new email
 router.post('/emails', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
-    console.log("@@@here", req);
-    console.log("@@@userid", req.user);
     const { receiverEmail, title, content } = req.body;
 
     if (!receiverEmail.endsWith('@hometask.com')) return res.status(400).json({ message: 'Invalid email domain' });
@@ -165,7 +178,7 @@ router.patch('/emails/:id/read', authenticateToken, async (req: AuthenticatedReq
 });
   
 // Move email to/from trash
-router.patch('/emails/:id/trash', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+router.delete('/emails/:id/trash', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
     const { isTrashed } = req.body;
     await pool.query('UPDATE inbox.emails SET is_trashed = $1 WHERE id = $2 AND receiver_id = $3', [isTrashed, req.params.id, req.user!.userId]);
     res.sendStatus(204);
