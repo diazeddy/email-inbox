@@ -31,16 +31,17 @@ const EmailView: React.FC = () => {
     if (!email) return <div>Loading...</div>;
 
     return (
-        <div>
-            <h2>{email.title}</h2>
-            <div dangerouslySetInnerHTML={{ __html: email.content }} />
-            <div>
-            <textarea
-                value={replyContent}
-                onChange={(e) => setReplyContent(e.target.value)}
-                placeholder="Type your reply here"
-            />
-            <button onClick={replyToEmail}>Reply</button>
+        <div className="p-4">
+            <h2 className="text-2xl font-bold">{email.title}</h2>
+            <div className="mt-4" dangerouslySetInnerHTML={{ __html: email.content }} />
+            <div className="mt-4">
+                <textarea
+                    className="w-full p-2 border border-gray-300 rounded"
+                    value={replyContent}
+                    onChange={(e) => setReplyContent(e.target.value)}
+                    placeholder="Type your reply here"
+                />
+                <button onClick={replyToEmail} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Reply</button>
             </div>
         </div>
     );

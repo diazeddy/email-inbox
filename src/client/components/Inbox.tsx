@@ -48,20 +48,22 @@ const Inbox:React.FC = () => {
     }, [auth]);
 
     return (
-        <div>
+        <div className="p-4">
             <h1>Inbox</h1>
             <Link to="/send">Send Email</Link>
             <Search onSearchResults={handleSearchResults} />
             <Filter onFilterChange={handleFilterChange} />
-            {emails.map((email) => (
-                <Link key={email.id} to={`/email/${email.id}`}>
-                    <Email
-                        key={email.id}
-                        {...email}
-                        onStatusChange={fetchEmails}
-                    />
-                </Link>
-            ))}
+            <div className="space-y-4">
+                {emails.map((email) => (
+                    <Link key={email.id} to={`/email/${email.id}`} className="block">
+                        <Email
+                            key={email.id}
+                            {...email}
+                            onStatusChange={fetchEmails}
+                        />
+                    </Link>
+                ))}
+            </div>
         </div>    
     );
 }

@@ -22,17 +22,17 @@ const Register = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-4 space-y-4">
             <h1>Register</h1>
             <div>
                 <label>Email</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 border border-gray-300 rounded" required />
             </div>
             <div>
                 <label>Password</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-2 border border-gray-300 rounded" required />
             </div>
-            <button type="submit">Register</button>
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Register</button>
         </form>
     );
 };

@@ -18,21 +18,21 @@ const SendEmail: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-4 space-y-4">
             <h1>Send Email</h1>
             <div>
                 <label>To</label>
-                <input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} required />
+                <input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} className="w-full p-2 border border-gray-300 rounded" required />
             </div>
             <div>
                 <label>Title</label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full p-2 border border-gray-300 rounded" required />
             </div>
             <div>
                 <label>Content</label>
-                <textarea value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                <textarea value={content} onChange={(e) => setContent(e.target.value)} className="w-full p-2 border border-gray-300 rounded" required></textarea>
             </div>
-            <button type="submit">Send</button>
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Send</button>
         </form>
     );
 }
