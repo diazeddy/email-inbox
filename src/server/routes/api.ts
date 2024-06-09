@@ -1,14 +1,5 @@
 import { Router, Response, Request, NextFunction } from "express";
 import pg from "pg";
-
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const { Pool } = require('pg');
-// const app = express();
-// const port = 5000;
-
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
@@ -63,8 +54,8 @@ const createTableEmails = `
     CREATE SCHEMA IF NOT EXISTS inbox;
     CREATE TABLE IF NOT EXISTS inbox.emails (
         id SERIAL PRIMARY KEY,
-        sender_id INTEGER REFERENCES users(id),
-        receiver_id INTEGER REFERENCES users(id),
+        sender_id INTEGER,
+        receiver_id INTEGER,
         thread_id INTEGER,
         title VARCHAR(255),
         content TEXT,
@@ -78,8 +69,8 @@ const createTableEmailThreads = `
     CREATE SCHEMA IF NOT EXISTS inbox;
     CREATE TABLE IF NOT EXISTS inbox.email_threads (
         id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id),
-        email_id INTEGER REFERENCES emails(id)
+        user_id INTEGER,
+        email_id INTEGER
     );
 `;
 
@@ -149,7 +140,10 @@ router.get('/emails/:id', authenticateToken, async (req: AuthenticatedRequest, r
   
 // Send new email
 router.post('/emails', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+    console.log("@@@here", req);
+    console.log("@@@userid", req.user);
     const { receiverEmail, title, content } = req.body;
+
     if (!receiverEmail.endsWith('@hometask.com')) return res.status(400).json({ message: 'Invalid email domain' });
 
     const receiverResult = await pool.query('SELECT id FROM inbox.users WHERE email = $1', [receiverEmail]);

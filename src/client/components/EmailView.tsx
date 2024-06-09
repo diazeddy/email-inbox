@@ -8,6 +8,7 @@ const EmailView: React.FC = () => {
     const { auth } = useContext(AuthContext);
     const { id } = useParams();
     const [email, setEmail] = useState<Email | null>(null);
+    const [replyContent, setReplyContent] = useState<string>("");
 
     useEffect(() => {
         const fetchEmail = async () => {
@@ -18,13 +19,29 @@ const EmailView: React.FC = () => {
         };
         fetchEmail();
     }, [id, auth]);
-    
+
+    const replyToEmail = async () => {
+        await axios.post(`http://localhost:3000/api/emails/${id}/reply`, {
+            threadId: email?.thread_id || email?.id,
+            content: replyContent
+        });
+        setReplyContent('');
+    };
+
     if (!email) return <div>Loading...</div>;
 
     return (
         <div>
-            <h1>{email.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: email.content }}></div>
+            <h2>{email.title}</h2>
+            <div dangerouslySetInnerHTML={{ __html: email.content }} />
+            <div>
+            <textarea
+                value={replyContent}
+                onChange={(e) => setReplyContent(e.target.value)}
+                placeholder="Type your reply here"
+            />
+            <button onClick={replyToEmail}>Reply</button>
+            </div>
         </div>
     );
 }

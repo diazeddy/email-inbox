@@ -10,26 +10,8 @@ const Login: React.FC = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const validateEmail = (email: string) => {
-        const pattern = /^[a-zA-Z0-9._%+-]+@hometask.com$/;
-
-        return pattern.test(email);
-    }
-
-
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        // try {
-        //     if (validateEmail(username)) {
-        //         const response = await login(username, password);
-        //         localStorage.setItem('token', response.data.token);
-        //         navigate('/dashboard');
-        //     } else {
-        //         alert('Email should be ended with "@hometask.com".')
-        //     }
-        // } catch (error) {
-        //     console.error('Error logging in:', error);
-        // }
         await login(email, password);
         navigate('/inbox');
     };
